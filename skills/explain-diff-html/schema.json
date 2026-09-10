@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/explain-diff-html.schema.json",
+  "title": "Deterministic code-change explanation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "subtitle", "sections"],
+  "properties": {
+    "title": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "subtitle": { "type": "string", "minLength": 1, "maxLength": 180 },
+    "sections": {
+      "type": "array",
+      "minItems": 4,
+      "items": { "$ref": "#/$defs/section" },
+      "allOf": [
+        { "contains": { "type": "object", "properties": { "id": { "const": "background" } }, "required": ["id"] } },
+        { "contains": { "type": "object", "properties": { "id": { "const": "intuition" } }, "required": ["id"] } },
+        { "contains": { "type": "object", "properties": { "id": { "const": "code" } }, "required": ["id"] } },
+        { "contains": { "type": "object", "properties": { "id": { "const": "quiz" } }, "required": ["id"] } }
+      ]
+    }
+  },
+  "$defs": {
+    "nonEmpty": { "type": "string", "minLength": 1 },
+    "section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "blocks"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+        "title": { "$ref": "#/$defs/nonEmpty" },
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/markdown" },
+              { "$ref": "#/$defs/code" },
+              { "$ref": "#/$defs/callout" },
+              { "$ref": "#/$defs/comparison" },
+              { "$ref": "#/$defs/mermaid" },
+              { "$ref": "#/$defs/quiz" }
+            ]
+          }
+        }
+      }
+    },
+    "markdown": {
+      "type": "object", "additionalProperties": false, "required": ["type", "markdown"],
+      "properties": { "type": { "const": "markdown" }, "heading": { "$ref": "#/$defs/nonEmpty" }, "markdown": { "$ref": "#/$defs/nonEmpty" } }
+    },
+    "code": {
+      "type": "object", "additionalProperties": false, "required": ["type", "code"],
+      "properties": { "type": { "const": "code" }, "language": { "type": "string" }, "caption": { "$ref": "#/$defs/nonEmpty" }, "code": { "type": "string" } }
+    },
+    "callout": {
+      "type": "object", "additionalProperties": false, "required": ["type", "title", "markdown"],
+      "properties": { "type": { "const": "callout" }, "tone": { "enum": ["note", "important", "warning"] }, "title": { "$ref": "#/$defs/nonEmpty" }, "markdown": { "$ref": "#/$defs/nonEmpty" } }
+    },
+    "comparisonSide": {
+      "type": "object", "additionalProperties": false, "required": ["title", "markdown"],
+      "properties": { "title": { "$ref": "#/$defs/nonEmpty" }, "markdown": { "$ref": "#/$defs/nonEmpty" } }
+    },
+    "comparison": {
+      "type": "object", "additionalProperties": false, "required": ["type", "left", "right"],
+      "properties": { "type": { "const": "comparison" }, "heading": { "$ref": "#/$defs/nonEmpty" }, "left": { "$ref": "#/$defs/comparisonSide" }, "right": { "$ref": "#/$defs/comparisonSide" } }
+    },
+    "mermaid": {
+      "type": "object", "additionalProperties": false, "required": ["type", "diagram"],
+      "properties": { "type": { "const": "mermaid" }, "title": { "$ref": "#/$defs/nonEmpty" }, "diagram": { "$ref": "#/$defs/nonEmpty" } }
+    },
+    "quizQuestion": {
+      "type": "object", "additionalProperties": false, "required": ["question", "options", "answer", "markdown"],
+      "properties": {
+        "question": { "$ref": "#/$defs/nonEmpty" },
+        "options": { "type": "array", "minItems": 2, "maxItems": 6, "items": { "$ref": "#/$defs/nonEmpty" } },
+        "answer": { "type": "integer", "minimum": 0 },
+        "markdown": { "$ref": "#/$defs/nonEmpty" }
+      }
+    },
+    "quiz": {
+      "type": "object", "additionalProperties": false, "required": ["type", "questions"],
+      "properties": { "type": { "const": "quiz" }, "title": { "$ref": "#/$defs/nonEmpty" }, "questions": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/quizQuestion" } } }
+    }
+  }
+}

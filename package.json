@@ -1,0 +1,27 @@
+{
+  "name": "pi-agent-config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Small, opinionated Pi workflows and engineering guidance",
+  "license": "UNLICENSED",
+  "scripts": {
+    "test": "node tests/validate.mjs && node --test tests/render-explain-diff-html.test.mjs"
+  },
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "skills": [
+      "./skills"
+    ],
+    "prompts": [
+      "./prompts"
+    ]
+  },
+  "dependencies": {
+    "ajv": "8.20.0",
+    "markdown-it": "15.0.1",
+    "mermaid": "11.17.2",
+    "shiki": "3.12.2"
+  }
+}

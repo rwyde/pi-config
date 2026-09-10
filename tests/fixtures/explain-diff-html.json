@@ -1,0 +1,130 @@
+{
+  "title": "Request flow after the handler change",
+  "subtitle": "How one Rust handler now returns an HTML fragment safely and predictably.",
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background",
+      "blocks": [
+        {
+          "type": "markdown",
+          "heading": "The existing boundary",
+          "markdown": "The browser sends a request to the **Rust handler**. The handler reads repository state and chooses a *response* with an inline `Content-Type` value.\n\n1. Validate the request.\n2. Persist the change.\n3. Render the current state.\n\n- Full requests receive a document.\n- Enhanced requests receive a fragment.\n\n> Persisted state remains authoritative.\n\n| Request | Response |\n| --- | --- |\n| Full | Document |\n| Enhanced | Fragment |\n\nRead the [HTTP overview](https://example.com/http). Unsafe links stay inert: [script](javascript:alert(1)), [data](data:text/html,unsafe), and [VBScript](vbscript:msgbox(1)).\n\nUntrusted HTML stays text: <script>alert(1)</script><img src=x onerror=alert(1)> & records."
+        },
+        {
+          "type": "comparison",
+          "heading": "Response shapes",
+          "left": {
+            "title": "Full request",
+            "markdown": "Returns the complete document."
+          },
+          "right": {
+            "title": "Enhanced request",
+            "markdown": "Returns the **changed fragment** with an inline `text/html` type."
+          }
+        },
+        {
+          "type": "callout",
+          "tone": "important",
+          "title": "Invariant",
+          "markdown": "Both paths read the same persisted values before rendering. See the [request contract](https://example.com/contract)."
+        }
+      ]
+    },
+    {
+      "id": "intuition",
+      "title": "Intuition",
+      "blocks": [
+        {
+          "type": "mermaid",
+          "title": "A request moves through three boundaries",
+          "diagram": "flowchart LR\n    B[Browser] -->|POST /posts| H[Rust handler]\n    H -->|validate and store| D[(SQLite)]\n    H -->|render current rows| T[Template]"
+        },
+        {
+          "type": "mermaid",
+          "title": "One post request",
+          "diagram": "sequenceDiagram\n    participant B as Browser\n    participant H as Rust handler\n    participant D as SQLite\n    B->>H: create post\n    H->>D: insert row\n    D-->>H: stored row\n    H-->>B: return escaped fragment"
+        }
+      ]
+    },
+    {
+      "id": "code",
+      "title": "Code walkthrough",
+      "blocks": [
+        {
+          "type": "code",
+          "language": "rust",
+          "caption": "The handler chooses a response",
+          "code": "if request.is_fragment() {\n    render_posts(&posts)\n} else {\n    redirect(\"/\")\n}"
+        },
+        {
+          "type": "code",
+          "language": "html",
+          "caption": "The browser selects a target",
+          "code": "<form method=\"post\" action=\"/posts\" hx-target=\"#posts\">\n  <button>Save & continue</button>\n</form>"
+        },
+        {
+          "type": "code",
+          "language": "js",
+          "caption": "A Shiki language alias",
+          "code": "const response = await fetch('/posts');"
+        },
+        {
+          "type": "code",
+          "language": "made-up-language",
+          "caption": "Unknown languages remain plain text",
+          "code": "</script><img onerror=alert(1)> & value"
+        },
+        {
+          "type": "code",
+          "language": "js",
+          "caption": "A Shiki language alias",
+          "code": "const target = document.querySelector('#posts');"
+        },
+        {
+          "type": "markdown",
+          "heading": "Follow the changed path",
+          "markdown": "1. **Validate:** reject an empty body before writing.\n2. **Persist:** bind the body as a SQL value.\n3. **Render:** read current rows and render the selected response."
+        },
+        {
+          "type": "code",
+          "language": "rust",
+          "caption": "The persistence stage uses a dedicated code block",
+          "code": "query.bind(body).execute(&pool).await?;"
+        }
+      ]
+    },
+    {
+      "id": "quiz",
+      "title": "Quiz",
+      "blocks": [
+        {
+          "type": "quiz",
+          "title": "Check your understanding",
+          "questions": [
+            {
+              "question": "Why does the handler re-read rows before rendering?",
+              "options": [
+                "To make CSS load",
+                "To render current persisted state",
+                "To execute browser JavaScript"
+              ],
+              "answer": 1,
+              "markdown": "The **database** is authoritative, so the response represents state *after* the write."
+            },
+            {
+              "question": "What happens when a code language is unknown?",
+              "options": [
+                "Rendering stops",
+                "The code executes",
+                "Escaped plain code is emitted"
+              ],
+              "answer": 2,
+              "markdown": "The fallback preserves the source as inert `escaped text`."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

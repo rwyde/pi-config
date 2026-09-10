@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-theme="technical-paper" data-outline-collapsed="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><!--EXPLANATION_TITLE--></title>
+  <style>
+<!--EXPLANATION_CSS-->
+  </style>
+</head>
+<body data-mermaid-state="pending">
+  <header class="page-header">
+    <div class="page-heading">
+      <h1><!--EXPLANATION_HEADING--></h1>
+      <p><!--EXPLANATION_SUBTITLE--></p>
+    </div>
+    <label class="theme-control" for="theme-select">Theme
+      <select id="theme-select" aria-label="Page theme">
+        <option value="technical-paper">Technical Paper</option>
+        <option value="blueprint">Blueprint</option>
+        <option value="warm-editorial">Warm Editorial</option>
+      </select>
+    </label>
+  </header>
+  <div class="layout">
+    <aside class="outline-sidebar" id="outline-sidebar">
+      <div class="outline-shell">
+        <div class="outline-rail">
+          <button type="button" id="outline-toggle" aria-expanded="true" aria-controls="outline-panel" aria-label="Collapse outline" title="Collapse outline">‹</button>
+        </div>
+        <div class="outline-panel" id="outline-panel">
+          <strong>Outline</strong>
+          <nav aria-label="Explanation outline"><!--EXPLANATION_OUTLINE--></nav>
+        </div>
+      </div>
+    </aside>
+    <main><!--EXPLANATION_SECTIONS--></main>
+  </div>
+  <script>
+/*EXPLANATION_MERMAID_BUNDLE*/
+  </script>
+  <script>
+(() => {
+  document.documentElement.classList.add("js");
+
+  const storage = {
+    get(key) { try { return localStorage.getItem(key); } catch { return null; } },
+    set(key, value) { try { localStorage.setItem(key, value); } catch { /* file URLs may deny storage. */ } }
+  };
+
+  const outlineToggle = document.querySelector("#outline-toggle");
+  const setOutlineCollapsed = (collapsed) => {
+    document.documentElement.dataset.outlineCollapsed = String(collapsed);
+    outlineToggle.setAttribute("aria-expanded", String(!collapsed));
+    outlineToggle.setAttribute("aria-label", collapsed ? "Open outline" : "Collapse outline");
+    outlineToggle.title = collapsed ? "Open outline" : "Collapse outline";
+    outlineToggle.textContent = collapsed ? "›" : "‹";
+  };
+  setOutlineCollapsed(storage.get("explain-diff-outline-collapsed") === "true");
+  outlineToggle.addEventListener("click", () => {
+    const collapsed = document.documentElement.dataset.outlineCollapsed !== "true";
+    setOutlineCollapsed(collapsed);
+    storage.set("explain-diff-outline-collapsed", String(collapsed));
+  });
+
+  const quizzes = [...document.querySelectorAll(".quiz-card")];
+  quizzes.forEach((card) => {
+    card.querySelector(".check-answer").addEventListener("click", () => {
+      const selected = card.querySelector("input:checked");
+      const feedback = card.querySelector(".quiz-feedback");
+      if (!selected) {
+        feedback.textContent = "Choose an answer first.";
+        feedback.className = "quiz-feedback visible incorrect";
+        return;
+      }
+      const correct = selected.value === card.dataset.answer;
+      card.dataset.result = correct ? "correct" : "incorrect";
+      const correctOption = card.querySelector(".quiz-correct-option").textContent.trim();
+      const explanation = card.querySelector(".quiz-explanation").textContent.trim();
+      feedback.textContent = `${correct ? "Correct." : "Incorrect."} The correct option is ${correctOption}. ${explanation}`;
+      feedback.className = "quiz-feedback visible " + (correct ? "correct" : "incorrect");
+      const answered = quizzes.filter((item) => item.dataset.result).length;
+      const score = quizzes.filter((item) => item.dataset.result === "correct").length;
+      document.querySelectorAll(".quiz-score").forEach((output) => {
+        output.textContent = `Answered ${answered} of ${quizzes.length}; ${score} correct.`;
+      });
+    });
+  });
+
+  const sharedThemeCSS = `.actor, .node rect, .node polygon, .node path { stroke-width: 1px; }
+.actor-line { stroke-width: 1px; stroke-dasharray: 4 4; }
+.messageLine0, .messageLine1, .flowchart-link { stroke-width: 1.25px; }
+.edgeLabel rect, .labelBox { opacity: 1; }
+.node rect { rx: 0; ry: 0; }
+text, .messageText, .labelText { letter-spacing: 0; }`;
+  const mermaidThemes = {
+    "technical-paper": {
+      theme: "base",
+      themeVariables: {
+        background: "#ffffff", fontFamily: "system-ui, sans-serif", fontSize: "15px",
+        primaryColor: "#f8fafc", primaryTextColor: "#172033", primaryBorderColor: "#526174",
+        secondaryColor: "#eef2f6", secondaryTextColor: "#172033", secondaryBorderColor: "#708095",
+        tertiaryColor: "#ffffff", tertiaryTextColor: "#172033", tertiaryBorderColor: "#9aa7b7",
+        lineColor: "#536174", textColor: "#172033", mainBkg: "#f8fafc", nodeBorder: "#526174",
+        clusterBkg: "#ffffff", clusterBorder: "#9aa7b7", edgeLabelBackground: "#ffffff",
+        actorBkg: "#f8fafc", actorBorder: "#526174", actorTextColor: "#172033", actorLineColor: "#a8b1bd",
+        signalColor: "#526174", signalTextColor: "#172033", labelBoxBkgColor: "#eef2f6",
+        labelBoxBorderColor: "#708095", labelTextColor: "#172033", noteBkgColor: "#f8fafc",
+        noteBorderColor: "#708095", noteTextColor: "#172033", activationBkgColor: "#e7edf3", activationBorderColor: "#526174"
+      },
+      themeCSS: sharedThemeCSS
+    },
+    blueprint: {
+      theme: "base",
+      themeVariables: {
+        background: "#0b1930", fontFamily: "system-ui, sans-serif", fontSize: "15px",
+        primaryColor: "#102641", primaryTextColor: "#e5f0f7", primaryBorderColor: "#70a8c4",
+        secondaryColor: "#173451", secondaryTextColor: "#e5f0f7", secondaryBorderColor: "#568da9",
+        tertiaryColor: "#0b1930", tertiaryTextColor: "#e5f0f7", tertiaryBorderColor: "#3c6d88",
+        lineColor: "#75a9c2", textColor: "#e5f0f7", mainBkg: "#102641", nodeBorder: "#70a8c4",
+        clusterBkg: "#0b1930", clusterBorder: "#3c6d88", edgeLabelBackground: "#0b1930",
+        actorBkg: "#102641", actorBorder: "#70a8c4", actorTextColor: "#e5f0f7", actorLineColor: "#3f6780",
+        signalColor: "#79b0ca", signalTextColor: "#e5f0f7", labelBoxBkgColor: "#173451",
+        labelBoxBorderColor: "#568da9", labelTextColor: "#e5f0f7", noteBkgColor: "#173451",
+        noteBorderColor: "#70a8c4", noteTextColor: "#e5f0f7", activationBkgColor: "#214563", activationBorderColor: "#79b0ca"
+      },
+      themeCSS: sharedThemeCSS
+    },
+    "warm-editorial": {
+      theme: "base",
+      themeVariables: {
+        background: "#f6f0e5", fontFamily: "Georgia, serif", fontSize: "15px",
+        primaryColor: "#fbf7ef", primaryTextColor: "#2e2924", primaryBorderColor: "#8e4935",
+        secondaryColor: "#eee2d2", secondaryTextColor: "#2e2924", secondaryBorderColor: "#a66a55",
+        tertiaryColor: "#f6f0e5", tertiaryTextColor: "#2e2924", tertiaryBorderColor: "#aa9a88",
+        lineColor: "#754b3e", textColor: "#2e2924", mainBkg: "#fbf7ef", nodeBorder: "#8e4935",
+        clusterBkg: "#f6f0e5", clusterBorder: "#aa9a88", edgeLabelBackground: "#f6f0e5",
+        actorBkg: "#fbf7ef", actorBorder: "#8e4935", actorTextColor: "#2e2924", actorLineColor: "#b8aa9a",
+        signalColor: "#8e4935", signalTextColor: "#2e2924", labelBoxBkgColor: "#eee2d2",
+        labelBoxBorderColor: "#a66a55", labelTextColor: "#2e2924", noteBkgColor: "#eee2d2",
+        noteBorderColor: "#a66a55", noteTextColor: "#2e2924", activationBkgColor: "#ead9c5", activationBorderColor: "#8e4935"
+      },
+      themeCSS: sharedThemeCSS
+    }
+  };
+
+  let mermaidRenderGeneration = 0;
+  const renderMermaid = async (themeName) => {
+    const generation = ++mermaidRenderGeneration;
+    document.body.dataset.mermaidState = "rendering";
+    document.body.dataset.mermaidGeneration = String(generation);
+    const blocks = [...document.querySelectorAll(".mermaid-block")];
+    let failed = false;
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      suppressErrorRendering: true,
+      deterministicIds: true,
+      deterministicIDSeed: `explain-diff-${themeName}`,
+      ...mermaidThemes[themeName],
+      flowchart: { htmlLabels: false, curve: "linear" }
+    });
+    for (const [index, block] of blocks.entries()) {
+      if (generation !== mermaidRenderGeneration) return;
+      const output = block.querySelector(".mermaid-output");
+      const errorOutput = block.querySelector(".mermaid-error");
+      const source = block.querySelector(".mermaid-source").textContent;
+      block.removeAttribute("data-rendered");
+      output.replaceChildren();
+      errorOutput.hidden = true;
+      try {
+        const rendered = await mermaid.render(`mermaid-${generation}-${index}`, source);
+        if (generation !== mermaidRenderGeneration) return;
+        output.innerHTML = rendered.svg;
+        block.dataset.rendered = "true";
+      } catch (error) {
+        if (generation !== mermaidRenderGeneration) return;
+        failed = true;
+        errorOutput.textContent = `Mermaid render failed: ${error instanceof Error ? error.message : String(error)}`;
+        errorOutput.hidden = false;
+      }
+    }
+    if (generation !== mermaidRenderGeneration) return;
+    document.body.dataset.mermaidState = failed ? "error" : "complete";
+    window.dispatchEvent(new CustomEvent("mermaid-complete", { detail: { generation, theme: themeName, failed } }));
+  };
+
+  const themeSelect = document.querySelector("#theme-select");
+  const setTheme = (themeName, persist = true) => {
+    const selectedTheme = Object.hasOwn(mermaidThemes, themeName) ? themeName : "technical-paper";
+    document.documentElement.dataset.theme = selectedTheme;
+    themeSelect.value = selectedTheme;
+    if (persist) storage.set("explain-diff-theme", selectedTheme);
+    renderMermaid(selectedTheme);
+  };
+  themeSelect.addEventListener("change", () => setTheme(themeSelect.value));
+  setTheme(storage.get("explain-diff-theme") ?? "technical-paper", false);
+})();
+  </script>
+</body>
+</html>

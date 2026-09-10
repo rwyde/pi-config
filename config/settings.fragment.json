@@ -1,0 +1,28 @@
+{
+  "packages": [
+    {
+      "source": "npm:pi-subagents@0.66.0",
+      "prompts": [],
+      "skills": [
+        "skills/pi-subagents"
+      ]
+    },
+    "../../src/pi-agent-config",
+    "npm:@juicesharp/rpiv-ask-user-question@2.9.0"
+  ],
+  "subagents": {
+    "agentOverrides": {
+      "worker": { "thinking": "medium", "skills": ["simple-software"] },
+      "reviewer": { "thinking": "medium", "skills": ["simple-software"] },
+      "evidence-auditor": { "disabled": true },
+      "oracle": { "disabled": true },
+      "delegate": { "disabled": true },
+      "claude-code": { "disabled": true },
+      "claude-code-writer": { "disabled": true },
+      "codex-exec": { "disabled": true },
+      "codex-exec-writer": { "disabled": true },
+      "cursor-agent": { "disabled": true },
+      "cursor-agent-writer": { "disabled": true }
+    }
+  }
+}

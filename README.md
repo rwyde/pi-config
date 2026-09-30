@@ -14,12 +14,13 @@ A deliberately small, version-controlled Pi setup for simple software developmen
 - `software-workflow` — shared plan, implementation, review, and commit phases
 - `github-pr-review` — GitHub checkout, correctness review, optional Hunk integration, and explain-diff output
 - Four enabled subagent roles from `pi-subagents`: `scout`, `researcher`, `worker`, and `reviewer`
+- Context-efficient native MCP access to optional web-development tools
 
-See [`docs/principles.md`](docs/principles.md) and [`docs/architecture.md`](docs/architecture.md).
+See [`docs/principles.md`](docs/principles.md), [`docs/architecture.md`](docs/architecture.md), and [`docs/mcp.md`](docs/mcp.md).
 
 ## Installation
 
-This setup currently targets Pi `0.84.4` and pins `pi-subagents` `0.66.0`. Extension startup was smoke-tested with that combination.
+This setup currently targets Pi `0.99.1` and pins `pi-subagents` `0.66.0`. Package startup was smoke-tested with that combination.
 
 ```bash
 pi install npm:pi-subagents@0.66.0
@@ -30,7 +31,7 @@ ln -sfn ~/src/pi-agent-config/config/pi-subagents.json \
   ~/.pi/agent/extensions/subagent/config.json
 ```
 
-Merge the `subagents` object from [`config/settings.fragment.json`](config/settings.fragment.json) into `~/.pi/agent/settings.json`. Do not replace the existing package list; retain other installed Pi packages.
+Merge the `subagents` object from [`config/settings.fragment.json`](config/settings.fragment.json) into `~/.pi/agent/settings.json`. Do not replace the existing package list; retain other installed Pi packages. See [`docs/mcp.md`](docs/mcp.md) before copying the machine-local MCP example.
 
 Restart Pi or run `/reload` after resource changes. Changes to subagent startup configuration are safest to apply by restarting Pi.
 

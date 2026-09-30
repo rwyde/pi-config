@@ -1,0 +1,64 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.80",
+        "--executable-path",
+        "/usr/bin/chromium"
+      ],
+      "description": "Operate and verify browser flows with Playwright",
+      "exposure": "codemode-deferred",
+      "toolExposure": {
+        "browser_run_code_unsafe": "hidden"
+      }
+    },
+    "figma": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "figma-developer-mcp@0.13.2",
+        "--stdio"
+      ],
+      "env": {
+        "FIGMA_API_KEY": "${FIGMA_API_KEY}"
+      },
+      "description": "Read Figma design data and download design assets",
+      "exposure": "codemode"
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@1.9.0",
+        "--executable-path",
+        "/usr/bin/chromium",
+        "--isolated=true",
+        "--usage-statistics=false",
+        "--performance-crux=false"
+      ],
+      "description": "Diagnose browser console, network, CSS, performance, and Lighthouse issues",
+      "exposure": "codemode-deferred",
+      "toolExposure": {
+        "*": "hidden",
+        "list_pages": "codemode-deferred",
+        "select_page": "codemode-deferred",
+        "new_page": "codemode-deferred",
+        "navigate_page": "codemode-deferred",
+        "wait_for": "codemode-deferred",
+        "take_snapshot": "codemode-deferred",
+        "take_screenshot": "codemode-deferred",
+        "evaluate_script": "codemode-deferred",
+        "get_console_message": "codemode-deferred",
+        "list_console_messages": "codemode-deferred",
+        "get_network_request": "codemode-deferred",
+        "list_network_requests": "codemode-deferred",
+        "performance_analyze_insight": "codemode-deferred",
+        "performance_start_trace": "codemode-deferred",
+        "performance_stop_trace": "codemode-deferred",
+        "lighthouse_audit": "codemode-deferred"
+      }
+    }
+  }
+}

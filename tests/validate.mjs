@@ -62,12 +62,26 @@ assert(subagents.maxSubagentDepth === 1, "nested delegation must be capped at on
 assert(subagents.globalConcurrencyLimit === 4, "subagent concurrency must remain bounded");
 assert(subagents.maxSubagentSpawnsPerSession === 0, "long-lived sessions must not have a cumulative spawn cap");
 assert(subagents.maxSubagentSpawnsPerRun === 8, "individual runs must retain a spawn cap");
-assert(subagents.maxActiveAsyncRunsPerSession === 2, "simultaneous top-level async runs must remain bounded");
+assert(subagents.maxActiveAsyncRunsPerSession === 3, "simultaneous top-level async runs must remain bounded");
 assert(subagents.parallel?.maxTasks === 8, "parallel fanout must retain a task cap");
 assert(subagents.parallel?.concurrency === 4, "parallel execution must remain bounded");
 assert(subagents.scheduledRuns?.enabled === false, "schedules must remain disabled initially");
 
+const mcpExample = parse("config/mcp.example.json");
+for (const name of ["playwright", "figma", "chrome-devtools"]) {
+  const server = mcpExample.mcpServers?.[name];
+  assert(server, `MCP example must configure ${name}`);
+  assert(["codemode", "codemode-deferred"].includes(server.exposure), `${name} must stay out of direct tool declarations`);
+  assert(!("lifecycle" in server), `${name} must use native Pi MCP fields`);
+  assert(!("directTools" in server), `${name} must not use adapter-only fields`);
+}
+assert(mcpExample.mcpServers.figma.env?.FIGMA_API_KEY === "${FIGMA_API_KEY}", "Figma example must use an environment placeholder");
+assert(mcpExample.mcpServers.playwright.toolExposure?.browser_run_code_unsafe === "hidden", "Playwright unsafe code execution must stay hidden");
+assert(mcpExample.mcpServers["chrome-devtools"].toolExposure?.["*"] === "hidden", "Chrome DevTools must default to a tool allowlist");
+assert(read("docs/mcp.md").includes("Context policy"), "MCP setup must document its context policy");
+
 const fragment = parse("config/settings.fragment.json");
+assert(!fragment.packages?.some((entry) => String(entry?.source ?? entry).includes("pi-mcp-adapter")), "settings fragment must use Pi's built-in MCP support");
 const disabled = fragment.subagents?.agentOverrides ?? {};
 for (const name of ["evidence-auditor", "oracle", "delegate", "claude-code", "codex-exec", "cursor-agent"]) {
   assert(disabled[name]?.disabled === true, `${name} must be disabled in the initial surface`);

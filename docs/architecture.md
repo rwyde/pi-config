@@ -7,6 +7,7 @@
 | Enduring engineering judgment | `simple-software` skill | Loaded only for software work, but explicitly required by `/work` |
 | Software workflow phases | Prompt templates backed by the `software-workflow` skill | Each phase can be used and improved independently without a runtime state machine |
 | Context isolation and delegation | Pinned `pi-subagents` package | Reuses mature lifecycle, sandbox, and review machinery |
+| Worktree session transitions | `/worktree` extension | Rebuilds cwd-bound Pi resources and preserves source-session provenance |
 | Mechanical enforcement | Extension, only after repeated prompt failures | Code should enforce only what prose cannot reliably guarantee |
 | Repository-specific commands and conventions | Project `.pi/` resources | Keeps general behavior independent from one employer or project |
 
@@ -22,6 +23,18 @@ The initial delegated roles are:
 - `reviewer`: fresh independent review
 
 Parallel execution is restricted to independent read-only work. Mutation has one owner at a time.
+
+## Worktree session boundary
+
+Pi binds tools, context, skills, settings, trust, and session storage to the
+session cwd. `/worktree` therefore creates or forks a session at the destination
+and uses Pi's supported session-replacement lifecycle instead of mutating cwd in
+place. A concise, reviewable handoff is the default; full-history transfer and
+a fresh session remain explicit alternatives.
+
+The source session is retained. Existing worktrees are never modified beyond
+normal reads, while creation requires confirmation and delegates branch and
+checkout mechanics to Git.
 
 ## Why use a large dependency behind a small surface?
 

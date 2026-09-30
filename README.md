@@ -10,17 +10,18 @@ A deliberately small, version-controlled Pi setup for simple software developmen
 - `/commit [guidance]` — create one local commit without pushing
 - `/work [--commit] <goal>` — compose planning and implementation, with explicit optional commit
 - `/pr-review <PR-URL> [--hunk]` — review a temporary PR checkout and generate an HTML explanation
+- `/worktree [selector]` — open or create a Git worktree and continue in a worktree-bound Pi session
 - `simple-software` — shared engineering principles
 - `software-workflow` — shared plan, implementation, review, and commit phases
 - `github-pr-review` — GitHub checkout, correctness review, optional Hunk integration, and explain-diff output
 - Four enabled subagent roles from `pi-subagents`: `scout`, `researcher`, `worker`, and `reviewer`
 - Context-efficient native MCP access to optional web-development tools
 
-See [`docs/principles.md`](docs/principles.md), [`docs/architecture.md`](docs/architecture.md), and [`docs/mcp.md`](docs/mcp.md).
+See [`docs/principles.md`](docs/principles.md), [`docs/architecture.md`](docs/architecture.md), [`docs/mcp.md`](docs/mcp.md), and [`docs/worktrees.md`](docs/worktrees.md).
 
 ## Installation
 
-This setup currently targets Pi `0.99.1` and pins `pi-subagents` `0.66.0`. Package startup was smoke-tested with that combination.
+This setup currently targets Pi `0.99.1` and pins `pi-subagents` `0.66.0`. Package and extension startup were smoke-tested with that combination.
 
 ```bash
 pi install npm:pi-subagents@0.66.0
@@ -34,6 +35,11 @@ ln -sfn ~/src/pi-agent-config/config/pi-subagents.json \
 Merge the `subagents` object from [`config/settings.fragment.json`](config/settings.fragment.json) into `~/.pi/agent/settings.json`. Do not replace the existing package list; retain other installed Pi packages. See [`docs/mcp.md`](docs/mcp.md) before copying the machine-local MCP example.
 
 Restart Pi or run `/reload` after resource changes. Changes to subagent startup configuration are safest to apply by restarting Pi.
+
+A typical worktree flow starts Pi in a read-only primary checkout, uses the
+session to clarify the work, then runs `/worktree` to create or select the
+implementation checkout. The default transfer mode generates an editable,
+concise handoff before Pi switches to a session rooted in that worktree.
 
 ## Scope
 

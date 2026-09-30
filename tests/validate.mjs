@@ -9,8 +9,26 @@ const assert = (condition, message) => {
 };
 
 const pkg = parse("package.json");
+assert(pkg.pi?.extensions?.includes("./extensions"), "package must expose extensions");
 assert(pkg.pi?.skills?.includes("./skills"), "package must expose skills");
 assert(pkg.pi?.prompts?.includes("./prompts"), "package must expose prompts");
+assert(pkg.peerDependencies?.["@earendil-works/pi-ai"] === "*", "Pi AI must remain a peer dependency");
+assert(
+  pkg.peerDependencies?.["@earendil-works/pi-coding-agent"] === "*",
+  "Pi coding agent must remain a peer dependency",
+);
+
+const worktreeExtension = read("extensions/worktree.ts");
+assert(worktreeExtension.includes('registerCommand("worktree"'), "worktree command must be registered");
+assert(
+  read("extensions/worktree-session.mjs").includes("SessionManager.forkFrom"),
+  "worktree command must support full-history transfer",
+);
+assert(worktreeExtension.includes("ctx.switchSession"), "worktree command must replace the active session safely");
+assert(
+  read("extensions/worktree-session.mjs").includes("parentSession"),
+  "worktree handoffs must retain source-session provenance",
+);
 
 const skill = read("skills/simple-software/SKILL.md");
 assert(skill.startsWith("---\nname: simple-software\n"), "skill frontmatter is missing or invalid");

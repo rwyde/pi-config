@@ -25,10 +25,10 @@ This setup currently targets Pi `0.99.1` and pins `pi-subagents` `0.66.0`. Packa
 
 ```bash
 pi install npm:pi-subagents@0.66.0
-git clone https://github.com/rwyde/pi-agent-config.git ~/src/pi-agent-config
-pi install ~/src/pi-agent-config
+git clone https://github.com/rwyde/pi-config.git ~/src/pi-config
+pi install ~/src/pi-config
 mkdir -p ~/.pi/agent/extensions/subagent
-ln -sfn ~/src/pi-agent-config/config/pi-subagents.json \
+ln -sfn ~/src/pi-config/config/pi-subagents.json \
   ~/.pi/agent/extensions/subagent/config.json
 ```
 

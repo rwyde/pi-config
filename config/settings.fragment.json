@@ -7,7 +7,7 @@
         "skills/pi-subagents"
       ]
     },
-    "../../src/pi-agent-config",
+    "../../src/pi-config",
     "npm:@juicesharp/rpiv-ask-user-question@2.9.0"
   ],
   "subagents": {

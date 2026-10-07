@@ -7,12 +7,10 @@ A deliberately small, version-controlled Pi setup for simple software developmen
 - `/plan <goal>` — inspect and produce a small actionable plan
 - `/implement [goal]` — implement the latest plan or a supplied goal
 - `/review [focus]` — proportionally review the current change
-- `/commit [guidance]` — create one local commit without pushing
-- `/work [--commit] <goal>` — compose planning and implementation, with explicit optional commit
+- `/commit [guidance]` — create one commit and push it to the configured upstream
 - `/pr-review <PR-URL> [--hunk]` — review a temporary PR checkout and generate an HTML explanation
 - `/worktree [selector]` — open or create a Git worktree and continue in a worktree-bound Pi session
 - `simple-software` — shared engineering principles
-- `software-workflow` — shared plan, implementation, review, and commit phases
 - `github-pr-review` — GitHub checkout, correctness review, optional Hunk integration, and explain-diff output
 - Four enabled subagent roles from `pi-subagents`: `scout`, `researcher`, `worker`, and `reviewer`
 - Context-efficient native MCP access to optional web-development tools
@@ -53,7 +51,7 @@ This repository owns general-purpose behavior only. Employer- and repository-spe
 - nesting capped at one level;
 - bounded concurrency and spawn counts;
 - schedules and persistent fleet UI disabled;
-- commit, push, and PR creation require explicit user authorization.
+- commit and push require `/commit` or equivalent explicit authorization; PR creation requires separate authorization.
 
 ## Development
 

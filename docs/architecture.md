@@ -4,8 +4,8 @@
 
 | Concern | Mechanism | Reason |
 |---|---|---|
-| Enduring engineering judgment | `simple-software` skill | Loaded only for software work, but explicitly required by `/work` |
-| Software workflow phases | Prompt templates backed by the `software-workflow` skill | Each phase can be used and improved independently without a runtime state machine |
+| Enduring engineering judgment | `simple-software` skill | Loaded only for software work |
+| Software commands | Self-contained prompt templates | Commands stay explicit without imposing a workflow state machine |
 | Context isolation and delegation | Pinned `pi-subagents` package | Reuses mature lifecycle, sandbox, and review machinery |
 | Worktree session transitions | `/worktree` extension | Rebuilds cwd-bound Pi resources and preserves source-session provenance |
 | Mechanical enforcement | Extension, only after repeated prompt failures | Code should enforce only what prose cannot reliably guarantee |

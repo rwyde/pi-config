@@ -56,23 +56,17 @@ assert(prReviewSkill.includes("hunk skill path hunk-review"), "PR review must re
 const prReviewPrompt = read("prompts/pr-review.md");
 assert(prReviewPrompt.includes("$@") && prReviewPrompt.includes("github-pr-review"), "PR review prompt must pass arguments to its skill");
 
-const workflowSkill = read("skills/software-workflow/SKILL.md");
-assert(workflowSkill.startsWith("---\nname: software-workflow\n"), "workflow skill frontmatter is missing or invalid");
 for (const phase of ["plan", "implement", "review", "commit"]) {
-  assert(read(`skills/software-workflow/references/${phase}.md`).length > 0, `${phase} phase must exist`);
   const prompt = read(`prompts/${phase}.md`);
   assert(prompt.startsWith("---\n"), `${phase} prompt frontmatter is missing`);
-  assert(prompt.includes("software-workflow"), `${phase} prompt must load the workflow skill`);
+  assert(prompt.includes("$@"), `${phase} prompt must accept optional guidance`);
 }
 for (const phase of ["plan", "implement", "review"]) {
   assert(read(`prompts/${phase}.md`).includes("simple-software"), `${phase} prompt must load the engineering principles`);
 }
-const workflow = read("prompts/work.md");
-assert(workflow.startsWith("---\n"), "work prompt frontmatter is missing");
-assert(workflow.includes("$@"), "work prompt must interpolate the user's goal");
-assert(workflow.includes("simple-software") && workflow.includes("software-workflow"), "work prompt must load both workflow skills");
-assert(workflow.includes("first argument is exactly `--commit`"), "work must require explicit commit authorization");
-assert(workflow.includes("Never push"), "work must guard external delivery actions");
+const commitPrompt = read("prompts/commit.md");
+assert(commitPrompt.includes("configured upstream"), "commit prompt must push to the configured upstream");
+assert(commitPrompt.includes("do not guess a remote or force"), "commit prompt must handle push failures safely");
 
 const subagents = parse("config/pi-subagents.json");
 assert(subagents.asyncByDefault === false, "subagents must default to foreground execution");

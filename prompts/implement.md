@@ -3,8 +3,10 @@ description: Implement the latest agreed plan or a supplied software goal
 argument-hint: "[goal]"
 ---
 
-Read and apply the `simple-software` and `software-workflow` skills. Execute only the Implement phase.
+Read and apply the `simple-software` skill.
 
-Use the latest agreed plan in this conversation. If arguments are supplied, treat them as the implementation goal or additional constraints:
+Implement the supplied goal. If no goal is supplied, implement the most recent plan explicitly agreed to by the user. Supplied arguments take precedence over earlier plans:
 
 $@
+
+Keep one writer, stay within the requested scope, run the smallest relevant validation, inspect the resulting diff, and do not commit or push. Report the files changed, validation actually run, and any concrete remaining limitation.

@@ -15,17 +15,13 @@ Produce software that is correct **and** simple to understand, maintain, change,
 7. Reject SOLID, design patterns, OOP, DRY, and any other technique when applied as doctrine rather than as a locally useful tool.
 8. Keep behavior local, control flow direct, names precise, and debugging easy.
 9. Make small, reversible changes. Understand existing fences before removing them.
-10. Test behavior at stable boundaries and verify claims with actual evidence.
-11. Keep one writer; parallelize independent investigation.
+10. Verify claims with proportionate, actual evidence.
+11. Keep one writer per worktree; parallelize independent investigation or explicitly assigned, isolated implementation lanes.
 12. Add no speculative scope.
 
-## Testing policy
+## Testing authorization
 
-- **Bug fixes:** failing regression test first when practical.
-- **Understood behavior:** red → green → refactor.
-- **Exploration/prototyping:** learn the behavior first, then test the stable shape.
-- Favor integration tests around meaningful module boundaries, focused unit tests for precise logic, and a small reliable end-to-end suite.
-- Avoid implementation-coupled tests, gratuitous mocks, and coverage theater.
+Writing or modifying automated tests requires explicit user authorization. Once authorized, apply the `software-testing` skill. Existing relevant checks may be run without adding or changing tests.
 
 ## Architectural default
 

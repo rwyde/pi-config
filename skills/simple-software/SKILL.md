@@ -1,6 +1,6 @@
 ---
 name: simple-software
-description: Engineering principles for designing, implementing, refactoring, testing, and reviewing software. Use for software architecture and coding work, especially when choosing abstractions, service boundaries, classes, or test strategy.
+description: Engineering principles for designing, implementing, refactoring, and reviewing software. Use for software architecture and coding work, especially when choosing abstractions, service boundaries, or classes.
 ---
 
 # Simple Software
@@ -27,21 +27,13 @@ Apply these as judgment, not dogma. The goal is the smallest understandable syst
 6. Make the common case obvious. Keep exceptional complexity behind a narrow interface.
 7. Make small, reversible changes and keep the system working throughout a refactor.
 
-## Tests
-
-1. For a bug, reproduce it with a failing regression test before fixing it whenever practical.
-2. For well-understood behavior changes, prefer red → green → refactor.
-3. For exploratory work where the behavior is not understood yet, establish the shape first and add tests as stable boundaries emerge.
-4. Prefer integration tests around meaningful module boundaries. Use unit tests where they give fast, precise diagnosis and a small end-to-end suite for critical paths.
-5. Test externally meaningful behavior rather than implementation details. Avoid mocks unless crossing an expensive or uncontrollable boundary.
-6. Do not add tests merely to increase coverage.
-
 ## Working Discipline
 
 - Verify assumptions from code, documentation, or execution.
-- Do not claim success without running the relevant checks and reporting their actual results.
+- Verify proportionately with existing checks or a focused manual check. Report what was actually checked and state any remaining uncertainty; do not add work just to make a stronger success claim.
 - Keep changes within requested scope; mention attractive follow-up work instead of smuggling it into the patch.
-- Use one writer at a time. Parallelize independent read-only investigation, not overlapping mutation.
+- For exploratory work, deliver the smallest usable result first and stop when the request is satisfied.
+- Use one writer per worktree. Parallelize independent read-only investigation or explicitly assigned, isolated implementation lanes; never overlap mutation ownership.
 - When necessary complexity remains, explain the constraint that requires it.
 
 ## Sources

@@ -1,7 +1,8 @@
 {
+  "toolActivation": "eager",
   "toolDescriptionMode": "compact",
   "inlineToolDisplay": "summary",
-  "asyncByDefault": false,
+  "asyncByDefault": true,
   "defaultSubagentContext": "fresh",
   "fleetView": false,
   "asyncWidget": true,
@@ -9,14 +10,14 @@
   "scheduledRuns": {
     "enabled": false
   },
-  "maxSubagentDepth": 1,
-  "globalConcurrencyLimit": 4,
+  "maxSubagentDepth": 2,
+  "globalConcurrencyLimit": 8,
   "maxSubagentSpawnsPerSession": 0,
-  "maxSubagentSpawnsPerRun": 8,
-  "maxActiveAsyncRunsPerSession": 3,
+  "maxSubagentSpawnsPerRun": 16,
+  "maxActiveAsyncRunsPerSession": 6,
   "parallel": {
-    "maxTasks": 8,
-    "concurrency": 4
+    "maxTasks": 16,
+    "concurrency": 8
   },
   "artifactDir": "session",
   "resultScanLogging": "off"

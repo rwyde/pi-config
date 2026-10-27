@@ -1,14 +1,12 @@
 {
   "packages": [
     {
-      "source": "npm:pi-subagents@0.66.0",
+      "source": "npm:pi-subagents",
       "prompts": [],
-      "skills": [
-        "skills/pi-subagents"
-      ]
+      "skills": []
     },
     "../../src/pi-config",
-    "npm:@juicesharp/rpiv-ask-user-question@2.9.0"
+    "npm:@juicesharp/rpiv-ask-user-question"
   ],
   "subagents": {
     "agentOverrides": {

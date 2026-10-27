@@ -6,7 +6,8 @@
 |---|---|---|
 | Enduring engineering judgment | `simple-software` skill | Loaded only for software work |
 | Software commands | Self-contained prompt templates | Commands stay explicit without imposing a workflow state machine |
-| Context isolation and delegation | Pinned `pi-subagents` package | Reuses mature lifecycle, sandbox, and review machinery |
+| Context isolation and delegation | `pi-subagents` extension plus local `pi-subagents` skill | Reuses lifecycle machinery with a minimal launch protocol |
+| Parent-orchestrated parallel lanes | `swarm` skill, when requested | Starts useful work early and coordinates isolated ownership |
 | Worktree session transitions | `/worktree` extension | Rebuilds cwd-bound Pi resources and preserves source-session provenance |
 | Mechanical enforcement | Extension, only after repeated prompt failures | Code should enforce only what prose cannot reliably guarantee |
 | Repository-specific commands and conventions | Project `.pi/` resources | Keeps general behavior independent from one employer or project |
@@ -19,10 +20,10 @@ The initial delegated roles are:
 
 - `scout`: local read-only reconnaissance
 - `researcher`: external evidence
-- `worker`: the sole writer
+- `worker`: the sole writer within its assigned worktree
 - `reviewer`: fresh independent review
 
-Parallel execution is restricted to independent read-only work. Mutation has one owner at a time.
+Ordinary delegation uses the local minimal `pi-subagents` skill. When requested, `swarm` adds parent-orchestrated async worktree lanes. Independent read-only work can share a checkout; parallel writers require separate worktrees and exclusive component/contract ownership. The parent retains integration and final acceptance authority.
 
 ## Worktree session boundary
 
@@ -38,7 +39,7 @@ checkout mechanics to Git.
 
 ## Why use a large dependency behind a small surface?
 
-`pi-subagents` contains substantial lifecycle and recovery machinery. Reimplementing that machinery would create more risk and maintenance than pinning it. Our public workflow intentionally uses only four roles and a small command surface. Features earn adoption through observed need rather than availability.
+`pi-subagents` contains substantial lifecycle and recovery machinery. Reimplementing that machinery would create more risk and maintenance than reusing it. The package's skills are disabled through its resource filter; the extension remains enabled. Local skills replace its broad reading requirements with a minimal protocol and an opt-in orchestration pattern. Our public workflow intentionally uses only four roles and a small command surface. Features earn adoption through observed need rather than availability.
 
 ## Evolution rule
 
@@ -48,7 +49,6 @@ Do not add a command, role, skill, or extension after one inconvenience. Record 
 
 - employer- and project-specific integrations
 - automatic commits, pushes, or pull requests
-- multiple writers or worktree fanout
 - nested subagent trees
 - councils, missions, schedules, watchdogs, external-agent adapters
 - a workflow state-machine extension

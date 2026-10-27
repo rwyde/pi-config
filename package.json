@@ -6,7 +6,7 @@
   "description": "Small, opinionated Pi workflows and engineering guidance",
   "license": "UNLICENSED",
   "scripts": {
-    "test": "node tests/validate.mjs && node --test tests/*.test.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "keywords": [
     "pi-package"

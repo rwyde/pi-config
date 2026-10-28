@@ -1,9 +1,15 @@
 ---
 name: swarm
-description: Parent-orchestrated async subagent work with independent worktree lanes, progress updates, and reviewed integration. Use when the user requests a swarm or asks the parent to orchestrate parallel subagent/worktree lanes; not for ordinary single-child delegation or work assigned to a delegated child.
+description: Parent-orchestrated async subagent work with independent worktree lanes, progress updates, and reviewed integration. Always use when the user asks the agent to work on more than one item, even without mentioning swarm, parallelism, or delegation. Also use for explicit swarm or parallel-lane requests. Not for work assigned to a delegated child.
 ---
 
 # Swarm
+
+## When to invoke
+
+Load this skill whenever the user asks you to work on two or more items: tasks, issues, fixes, features, or deliverables, whether listed separately or combined in prose. The user does not need to say "swarm", "parallel", or "delegate". Also load it for explicit swarm or parent-orchestrated parallel-lane requests.
+
+Count user-requested work items, not implementation steps you invent for a single item. Related or dependent items still trigger the skill, but do not force parallel execution; keep dependent work sequential. Loading this skill does not override delegation authorization requirements or explicit instructions to work without subagents. Delegated children follow their handoff instead of invoking a nested swarm.
 
 The parent owns the plan, decisions, routing, progress, integration acceptance, and final answer. Children own bounded assignments, not the overall project. If you are a delegated child, follow your handoff instead of starting this workflow.
 

@@ -1,6 +1,6 @@
 ---
 name: pi-subagents
-description: Minimal parent-side guide to native Pi subagent tools, async launches, isolation, and recovery. Use when the user authorizes delegation. For the explicitly requested orchestrator plus parallel worktree-lane pattern, also use swarm.
+description: Minimal parent-side guide to native Pi subagent tools, async launches, isolation, and recovery. Use when the user authorizes delegation. Also use swarm whenever the user requests work on more than one item or explicitly requests swarm or parallel-lane orchestration.
 ---
 
 # Subagents: Minimal Protocol
@@ -55,4 +55,4 @@ Put non-schema top-level fields inside `options`, such as `context`, `timeoutMs`
 
 No additional reference is mandatory for routine native launches. If a field or advanced feature is genuinely unknown, fetch only its relevant `subagent({ action: "guide", options: { topic: "..." } })` topic. Examples: `workflows/scripted-workflows`, `tool-reference/execution-parameters`, `tool-reference/retained-children`. External runners, schedules, missions, and advanced gates need their own documentation only when actually used.
 
-Use [swarm](../swarm/SKILL.md) only for the user's requested parent-orchestrated parallel-lane pattern, not for every delegation.
+Use [swarm](../swarm/SKILL.md) whenever the user requests work on more than one item, even without explicit swarm or parallelism wording, or explicitly requests parent-orchestrated parallel lanes. Ordinary single-item delegation alone does not require swarm.
